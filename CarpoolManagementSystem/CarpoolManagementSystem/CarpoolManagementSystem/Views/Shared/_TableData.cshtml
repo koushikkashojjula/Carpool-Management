@@ -1,0 +1,39 @@
+﻿@model IEnumerable<LoginSignup.Models.Trip>
+
+<br />
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Date</th>
+            <th>Vacant seats</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.source</td>
+                <td>@item.destination</td>
+                <td>@item.date.ToString().Split(' ')[0]</td>
+                
+                @if (item.vacant_seats >= 0)
+                {
+                    <td>
+                        @item.vacant_seats
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td>@item.description</td>
+                <td><input type="button" value="Goto Trip" onclick="window.location.href='@Url.Action("TripDetails", "Trip",new { id = item.id } )';" /></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<link href="~/Content/bootstrap-superhero.css" rel="stylesheet" />

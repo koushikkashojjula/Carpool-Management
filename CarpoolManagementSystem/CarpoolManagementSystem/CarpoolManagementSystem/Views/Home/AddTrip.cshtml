@@ -1,0 +1,192 @@
+﻿@model LoginSignup.Models.Trip
+
+@{
+    ViewBag.Title = "AddTrip";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/site-demos.css">
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="~/scripts/jquery.validate.js"></script>
+<script src="~/scripts/jquery.validate.min.js"></script>
+<script src="~/scripts/jquery.validate-vsdoc.js"></script>
+<script src="~/scripts/jquery.validate.unobtrusive.js"></script>
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#1").hide();
+        $("#2").hide();
+    });
+    $(function () {
+        $("#chbk").click(function () {
+            if ($(this).is(':checked')) {
+                $("#1").show();
+                $("#2").show();
+                //$("#Form").validate({
+                //    rules: {
+                //        ifcheckeds: { required: true }
+                  
+                      
+
+
+                //    }
+                    
+                //});
+                $("#ifcheckeds").addClass('required');
+                
+                //var v_c = $("#ifcheckeds").val();
+                //if(v_c==null)
+                //{
+                //    alert("Fill the vacant seats");
+                //}
+
+            }
+            else {
+                $("#1").hide();
+                $("#2").hide();
+                $("#ifcheckeds").removeClass('required');
+            }
+        });
+    });
+    //$(function()
+    //{
+    //    $("#final").click(function () {
+    //        var v_c = $("#ifcheckeds").val();
+    //        if (v_c == null) {
+    //            //alert("Fill the vacant seats");
+    //            window.alert("Fill the vacant seats")
+    //        }
+    //    }); });
+    @*$(function () {
+        $("#final").click(function () {
+            $.get('/Home/AddTrip', {'t': @Model},function(response){
+                if(response=="1")
+                {
+                    window.alert("vacant seats cannot be empty");*@
+
+                    //TODO
+                    //if response = 1 route to login page
+                    //if response = 2 then show alertbox saying 'you are already a part of this trip'
+                    //if response = 3 then show alertbox saying 'added to trip successfully'
+                    //if response = 4 then show alertbox for error
+
+                    //window.alert(response);
+                    @*if(response == "1")
+                    {
+                        //Route to login page
+                        window.location.href = '@Url.Action("Login", "Account")';
+                    }
+                    else
+                    {
+                        if(response == "2")
+                        {
+                            window.alert("you are already a part of this trip");
+                        }
+                        else if(response == "3")
+                        {
+                            window.alert("added to trip successfully");
+                        }
+                        else if(response == "4")
+                        {
+                            window.alert("Error occured: added to trip un-successfully");
+                        }
+                        window.location.href = '@Url.Action("TripDetails", "Trip", new { id = Model.id  })';
+                    }*@
+                @*}
+                else
+                {
+                    window.location.href = '@Url.Action("Index", "Home")';
+                }
+                //window.location.href = '@Url.Action("TripDetails", "Trip", new { id = Model.id  })';
+            })
+
+        });
+    });*@
+</script>
+
+<h2>AddTrip</h2>
+
+@using (Html.BeginForm("AddTrip", "Home", new { @id = "Form", @class = "form-group" }, FormMethod.Post))
+
+{
+    @Html.ValidationSummary();
+    @Html.AntiForgeryToken();
+
+    <div class="form-group">
+        <br /><br /><br />
+        <label for="exampleInputName2" class="col-sm-2 control-label">Source *</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.source, new { @class = "form-control", placeholder = "source", required = "required", tabindex = 1 })
+            @Html.ValidationMessageFor(m => m.source)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <br /><br /><br />
+        <label for="exampleInputName2" class="col-sm-2 control-label">Destination *</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.destination, new { @class = "form-control", placeholder = "destination", required = "required", tabindex = 2 })
+            @Html.ValidationMessageFor(m => m.destination)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <br /><br /><br />
+        <label for="exampleInputName2" class="col-sm-2 control-label">Date *</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.date, new { @id = "datepicker", @class = "form-control", placeholder = "01/01/2016", required = "required", tabindex = 3 })
+            @Html.ValidationMessageFor(m => m.date)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <br /><br /><br />
+        <label for="exampleInputName2" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.description, new { @class = "form-control", tabindex = 4 })
+            @Html.ValidationMessageFor(m => m.description)
+        </div>
+    </div>
+    <div class="form-group">
+        <br /><br /><br />
+        <label for="exampleInputName2" class="col-sm-2 control-label">Car Available</label>
+        <div class="col-sm-10">
+            @Html.CheckBoxFor(m => m.carAvailable, new { @id = "chbk", @class = "form-control", tabindex = 7, style = "height:15px;width:15px" })
+            @Html.ValidationMessageFor(m => m.carAvailable)
+        </div>
+    </div>
+
+    <div class="form-group" id="1">
+        <br /><br /><br />
+        <label for="exampleInputName2" class="col-sm-2 control-label">Vacant Seats</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.vacant_seats, new { @id = "ifcheckeds", @class = "form-control", tabindex = 5 })
+            @Html.ValidationMessageFor(m => m.vacant_seats)
+        </div>
+    </div>
+
+    <div class="form-group" id="2">
+        <br /><br /><br />
+        <label for="exampleInputName2" class="col-sm-2 control-label">Estimated Cost ($)</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.estimated_cost, new { @id = "ifchecked", @class = "form-control", tabindex = 6 })
+            @Html.ValidationMessageFor(m => m.estimated_cost)
+        </div>
+    </div>
+
+
+    <br /><br /><br />
+    <p>Please fill all the mandatory(*) fields</p>
+
+    <input type="submit" class="btn btn-primary" value="Save" name="Add" id="final"/>
+}
+
+<link href="~/Content/bootstrap-superhero.css" rel="stylesheet" />

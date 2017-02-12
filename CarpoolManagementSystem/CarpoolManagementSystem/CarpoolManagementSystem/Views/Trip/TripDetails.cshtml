@@ -1,0 +1,211 @@
+﻿@model LoginSignup.Models.Trip
+
+@{
+    ViewBag.Title = "TripDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $( document ).ready(function() {
+        $.get('/Trip/ShowJoinButton', {'id': @Model.id},function(response){
+            //window.alert(response);
+            $.get()
+            if(response == "1")
+            {
+                //TODO - DONE
+                //if response == false Hide button
+                //else show button
+
+                $("#jointrip").attr('disabled','disabled');
+                $("#ContactAdmin").attr('disabled','disabled');
+
+            }
+            else if(response=="2")
+            {
+                //$("input[type=submit]").attr('disabled','disabled');
+                $("#jointrip").attr('disabled','disabled');
+                $("#deletetrip").attr('disabled','disabled');
+            }
+            else
+            {
+                $("#deletetrip").attr('disabled','disabled');
+            }
+            
+            
+        })
+
+
+    });
+
+    $(function() {
+        $("#ContactAdmin").click(function(){
+               
+            $('#showPopup').find('span').trigger('click')
+        })
+    });
+    $(function() {
+        $("#sendEmail").click(function(){
+            var emailText = $('#emailText').val();
+            $.get('/Trip/sendEmail', {'id': @Model.id, 'emailText' : emailText},function(response){
+                if(response == "success")
+                {
+                    window.alert("success");//show success message
+                }
+                else if(respond == "fail")
+                {
+                    window.alert("fail");//show faliure message
+                }
+                else{
+
+                }
+
+                $('#closeButtonEmail').trigger('click');
+            })
+        })
+    });
+
+    $(function () {
+        $("#jointrip").click(function () {
+            $.get('/Trip/JoinTrip', {'id': @Model.id},function(response){
+                if(response)
+                {
+                    //TODO
+                    //if response = 1 route to login page
+                    //if response = 2 then show alertbox saying 'you are already a part of this trip'
+                    //if response = 3 then show alertbox saying 'added to trip successfully'
+                    //if response = 4 then show alertbox for error
+
+                    //window.alert(response);
+                    if(response == "1")
+                    {
+                        //Route to login page
+                        window.location.href = '@Url.Action("Login", "Account")';
+                    }
+                    else
+                    {
+                        if(response == "2")
+                        {
+                            window.alert("you are already a part of this trip");
+                        }
+                        else if(response == "3")
+                        {
+                            window.alert("added to trip successfully");
+                        }
+                        else if(response == "4")
+                        {
+                            window.alert("Error occured: added to trip un-successfully");
+                        }
+                        window.location.href = '@Url.Action("TripDetails", "Trip", new { id = Model.id  })';
+                    }
+                }
+                //window.location.href = '@Url.Action("TripDetails", "Trip", new { id = Model.id  })';
+            })
+
+        });
+    });
+
+    $(function(){
+        $("#deletetrip").click(function(){
+            window.location.href='@Url.Action("deleteTrip", "Trip", new { id=Model.id})';
+        })
+    })
+</script>
+<h2>TripDetails</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <div class="form-group">
+            <label for="exampleInputName2" class="col-sm-2 control-label">Source</label>
+            <div class="col-sm-10">
+                @Html.DisplayTextFor(model => model.source)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <br /><br /><br />
+            <label for="exampleInputName2" class="col-sm-2 control-label">Destination</label>
+            <div class="col-sm-10">
+                @Html.DisplayTextFor(model => model.destination)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <br /><br /><br />
+            <label for="exampleInputName2" class="col-sm-2 control-label">Date</label>
+            <div class="col-sm-10">
+                @Html.DisplayTextFor(model => model.date.ToString().Split(' ')[0])
+            </div>
+        </div>
+
+        @if ((Model.description != null) || (!Model.description.IsEmpty()))
+        {
+            <div class="form-group">
+                <br /><br /><br />
+                <label for="exampleInputName2" class="col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                    @Html.DisplayTextFor(model => model.description)
+                </div>
+            </div>
+        }
+
+        @if (Model.vacant_seats >= 0)
+        {
+            <div class="form-group">
+                <br /><br /><br />
+                <label for="exampleInputName2" class="col-sm-2 control-label">Vacant Seats</label>
+                <div class="col-sm-10">
+                    @Html.DisplayTextFor(model => model.vacant_seats)
+                </div>
+            </div>
+        }
+
+        @if (Model.estimated_cost != null)
+        {
+            <div class="form-group">
+                <br /><br /><br />
+                <label for="exampleInputName2" class="col-sm-2 control-label">Estimated Cost ($)</label>
+                <div class="col-sm-10">
+                    @Html.DisplayTextFor(model => model.estimated_cost)
+                </div>
+            </div>
+        }
+    </dl>
+</div>
+<div class="modal fade" id="article-editor" style="left: 39%;right:40%;
+    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+        -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+        -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+            transition: opacity 0.3s linear, left 0.3s ease-out;">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3>Contact Trip Admin</h3>
+    </div>
+    <div class="modal-body" style="max-width: 1000px">
+        <textarea name="emailText" id="emailText" cols="40" rows="5" placeholder="Enter message" style="height:160px; width:inherit;"></textarea>
+    </div>
+    <div class="modal-footer">
+        <a href="" class="btn" id="closeButtonEmail" data-dismiss="modal">Close</a>
+        <a name="sendEmail" id="sendEmail" class="btn btn-primary">Send</a>
+    </div>
+</div>
+
+
+
+<br />
+<input type="submit" class="btn btn-primary" value="Join" name="Add" id="jointrip" onclick="JoinTripFunction()" /> |
+<input type="submit" class="btn btn-primary" value="Contact Trip Admin" name="ContactAdmin" id="ContactAdmin"  />   
+<input type="submit" class="btn btn-primary" value="Delete" id="deletetrip" />
+@if (User.Identity.IsAuthenticated)
+{
+    <a id="showPopup" data-toggle="modal" href="#article-editor"><span></span></a>
+}
+else
+{
+    <a id="showPopup" href="~/Account/Login" ><span></span></a>
+}
+        <link href="~/Content/bootstrap-superhero.css" rel="stylesheet" />
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }

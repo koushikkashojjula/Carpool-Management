@@ -1,0 +1,40 @@
+﻿@model LoginSignup.Models.SearchBarModel
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  });
+    </script>
+<form class="form-inline">
+    <br/>
+    <div class="form-group input-group-sm">
+        <label for="exampleInputName2">Source</label>
+        @Html.TextBoxFor(m => m.source, new { @id="source",@class = "form-control", placeholder = "Charlotte", tabindex = 1 })
+        @Html.ValidationMessageFor(m => m.source)        
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+
+    <div class="form-group input-group-sm">
+        <label for="exampleInputName2">Destination</label>
+        @Html.TextBoxFor(m => m.destination, new { @id="destination", @class = "form-control", placeholder = "New York", tabindex = 1 })
+        @Html.ValidationMessageFor(m => m.destination)
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+
+    <div class="form-group input-group-sm">
+        <label for="exampleInputName2">Date</label>
+        @Html.TextBoxFor(m => m.date, new { @id="datepicker", @class = "form-control", placeholder = "01/01/2016", tabindex = 1 })
+        @Html.ValidationMessageFor(m => m.date)
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+
+    <button type="submit"  id="search" class="btn btn-primary input-group-sm" formaction="@Url.Action("ShowTripData","Trip")">Search Trips</button>
+    &nbsp;&nbsp;&nbsp;
+    
+    @*TODO: Condition if user is logged in*@
+    <button type="submit" class="btn btn-primary input-group-sm" formaction="@Url.Action("AddTrip","Home")">Add Trip</button>
+    <br/><br/>
+</form>
